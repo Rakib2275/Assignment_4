@@ -12,6 +12,7 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandling";
 import { PropertyRoutes } from "./modules/property/property.route";
 import { LandlordPropertyRoutes } from "./modules/landlordProperty/landlordProperty.route";
 import { CategoryRoutes } from "./modules/categories/category.routes";
+import { RentalRoutes } from "./modules/rental/rental.routes";
 
 
 const app : Application = express();
@@ -34,6 +35,7 @@ app.use("/api/auth",authRouters)
 app.use("/api",PropertyRoutes)
 app.use("/api/landlord",LandlordPropertyRoutes)
 app.use("/api/categories", CategoryRoutes);
+app.use("/api/rentals",RentalRoutes)
 
 app.use(notFound)
 app.use(globalErrorHandler)
