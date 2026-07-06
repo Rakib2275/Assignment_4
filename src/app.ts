@@ -31,7 +31,7 @@ app.get("/",async (req : Request,res:Response) =>{
 
 app.use("/api/users",userRouter)
 app.use("/api/auth",authRouters)
-app.use("/api/properties",PropertyRoutes)
+app.use("/api",PropertyRoutes)
 app.use("/api/landlord",LandlordPropertyRoutes)
 app.use("/api/categories", CategoryRoutes);
 

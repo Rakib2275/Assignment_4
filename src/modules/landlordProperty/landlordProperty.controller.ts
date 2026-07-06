@@ -16,6 +16,36 @@ const createProperty = catchAsync(async (req, res) => {
   });
 });
 
+const updateProperty = catchAsync(async (req, res) => {
+  const result = await LandlordPropertyService.updatePropertyIntoDB(
+    req.params.id as string,
+    req.body
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Property updated successfully",
+    data: result,
+  });
+});
+
+
+const deleteProperty = catchAsync(async (req, res) => {
+  const result = await LandlordPropertyService.deletePropertyFromDB(
+    req.params.id as string
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Property deleted successfully",
+    data: result,
+  });
+});
+
 export const LandlordPropertyController = {
-    createProperty
+    createProperty,
+    updateProperty,
+    deleteProperty
 };
