@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get(
   "/properties",
-  auth(Role.LANDLORD),
+  auth(Role.LANDLORD,Role.TENANT),
   PropertyController.getAllProperties
 );
 router.get("/properties/:id",PropertyController.getSingleProperty);

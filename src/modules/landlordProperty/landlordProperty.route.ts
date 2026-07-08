@@ -16,4 +16,6 @@ router.delete("/properties/:id",auth(Role.LANDLORD),
   LandlordPropertyController.deleteProperty
 );
 
+router.patch("/requests/:id",LandlordPropertyController.updateRentalRequestStatus)
+
 export const LandlordPropertyRoutes = router;

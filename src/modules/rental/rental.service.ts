@@ -1,3 +1,4 @@
+import { RentalStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { ICreateRentalRequest } from "./rental.interface";
 
@@ -55,6 +56,8 @@ const getSingleRentalRequestFromDB = async (id: string) => {
     },
   });
 };
+
+
 
 export const RentalService = {
   createRentalRequestIntoDB,

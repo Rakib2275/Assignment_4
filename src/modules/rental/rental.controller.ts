@@ -40,6 +40,7 @@ const getSingleRentalRequest = catchAsync(async (req, res) => {
   });
 });
 
+
 export const RentalController = {
   createRentalRequest,
   getMyRentalRequests,

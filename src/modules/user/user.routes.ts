@@ -9,6 +9,4 @@ router.post("/register",userController.createUser)
 
 router.get("/me",auth(Role.LANDLORD,Role.TENANT),userController.getMyProfile);
 
-router.put("/my-profile",auth(Role.LANDLORD,Role.TENANT),userController.updateMyProfile)
-
 export const userRouter = router
