@@ -1,4 +1,4 @@
-import { PaymentStatus } from "../../../generated/prisma/enums";
+import { PaymentStatus, RentalStatus } from "../../../generated/prisma/enums";
 import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../lib/stripe";
@@ -94,7 +94,7 @@ const confirmPaymentIntoDB = async (sessionId: string) => {
       id: payment.rentalRequestId,
     },
     data: {
-      status: "ACTIVE",
+      status: RentalStatus.COMPLETED,
     },
   });
 
