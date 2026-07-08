@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../../lib/prisma";
-import { ILoginUser } from "./auth.interface";
+import { ILoginUser, RegisterUserPayload } from "./auth.interface";
 import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
 import config from "../../config";
 import { jwtUtils } from "../../utils/jwt";
@@ -50,40 +50,68 @@ const loginUser = async (payload: ILoginUser) => {
   };
 };
 
-const refreshToken = async(refreshToken : string) =>{
-    const verifiedRefreshToken = jwtUtils.verifyToken(refreshToken,config.jwt_refresh_secret);
-
-    if(!verifiedRefreshToken.success){
-      throw new Error(verifiedRefreshToken.error);
-    }
-
-    const {id} = verifiedRefreshToken.data as JwtPayload;
-
-    const user = await prisma.user.findUniqueOrThrow({
-      where : {id}
+const createUserIntoDB = async(payload : RegisterUserPayload) =>{
+    const {name,email,password,role,phone,address,image} = payload;
+    const isUserExist = await prisma.user.findUnique({
+        where: {email}
     })
-
-    if(user.status === "BLOCKED"){
-      throw new Error("User is blocked")
+    if(isUserExist){
+        throw new Error("User email already exist")
     }
 
-    const jwtPayload = {
-      id,
-      name : user.name,
-      email : user.email,
-      role : user.role
-    }
+    const hashedPassword = await bcrypt.hash(password,Number(config.bcrypt_salt_rounds))
 
-    const accessToken = jwtUtils.createToken(
-      jwtPayload,
-      config.jwt_access_secret,
-      config.jwt_access_expires_in as SignOptions
-    )
+    const createdUser = await prisma.user.create({
+        data:{
+            name,
+            email,
+            password: hashedPassword,
+            role,
+            phone,
+            address,
+            profile : {
+                create :{
+                    image
+                }
+            }
+        }
+    })
+    // await prisma.profile.create({
+    //     data : {
+    //         userId : createdUser.id,
+    //         profilePhoto
+    //     }
+    // })
 
-    return accessToken;
+    const user = await prisma.user.findUnique({
+        where: {
+            id: createdUser.id
+        },
+        omit:{
+            password : true
+        },
+        include : {
+            profile : true
+        }
+    })
+    return user;
+}
+
+const getMyProfileFromDB = async(userId : string) => {
+    const user = await prisma.user.findUniqueOrThrow({
+        where : {id : userId},
+        omit: {
+            password :true
+        },
+        include : {
+            profile: true
+        }
+    })
+    return user
 }
 
 export const authService = {
+  createUserIntoDB,
   loginUser,
-  refreshToken
+  getMyProfileFromDB
 };

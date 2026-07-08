@@ -6,11 +6,11 @@ const getAllPropertiesFromDB = async (query: IPropertyQuery) => {
   const limit = query.limit ? Number(query.limit) : 10;
   const page = query.page ? Number(query.page) : 1;
   const skip = (page - 1) * limit;
-
-  const sortBy = query.sortBy || "createdAt";
-  const sortOrder = query.sortOrder || "desc";
+  const sortBy = query.sortBy ? query.sortBy : "createdAt";
+  const sortOrder = query.sortOrder ? query.sortOrder : "desc";
 
   const andConditions: Prisma.PropertyWhereInput[] = [];
+  console.log("Query:",query)
 
   // Search
   if (query.searchTerm) {
@@ -39,28 +39,15 @@ const getAllPropertiesFromDB = async (query: IPropertyQuery) => {
   }
 
   // Location Filter
-  if (query.location) {
-    andConditions.push({
-      location: {
-        contains: query.location,
-        mode: "insensitive",
-      },
-    });
-  }
+if (query.location) {
+  andConditions.push({
+    location: {
+      contains: String(query.location),
+      mode: "insensitive",
+    },
+  });
+}
 
-  // Category Filter
-  if (query.categoryId) {
-    andConditions.push({
-      categoryId: query.categoryId,
-    });
-  }
-
-  // Status Filter
-  if (query.status) {
-    andConditions.push({
-      status: query.status,
-    });
-  }
 
   // Price Filter
   if (query.minPrice || query.maxPrice) {
@@ -72,15 +59,33 @@ const getAllPropertiesFromDB = async (query: IPropertyQuery) => {
     });
   }
 
+if (query.price) {
+  andConditions.push({
+    price: {
+      lte: Number(query.price),
+    },
+  });
+}
+
+  // Status Filter
+  if (query.status) {
+    andConditions.push({
+      status: query.status as any,
+    });
+  }
+
   const properties = await prisma.property.findMany({
     where: {
       AND: andConditions,
     },
+
     take: limit,
     skip,
+
     orderBy: {
       [sortBy]: sortOrder,
     },
+
     include: {
       landlord: {
         omit: {

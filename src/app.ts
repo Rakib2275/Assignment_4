@@ -5,7 +5,6 @@ import config from "./config"
 import httpStatus from "http-status";
 // import { prisma } from "./lib/prisma";
 // import bcrypt from "bcryptjs";
-import { userRouter } from "./modules/user/user.routes";
 import { authRouters } from "./modules/auth/auth.routes";
 import { notFound } from "./middlewares/notFound";
 import { globalErrorHandler } from "./middlewares/globalErrorHandling";
@@ -15,6 +14,7 @@ import { CategoryRoutes } from "./modules/categories/category.routes";
 import { RentalRoutes } from "./modules/rental/rental.routes";
 import { PaymentRoutes } from "./modules/payment/payment.routes";
 import { ReviewRoutes } from "./modules/reviews/review.route";
+import { AdminRoutes } from "./modules/Admin/admin.route";
 
 
 const app : Application = express();
@@ -32,7 +32,6 @@ app.get("/",async (req : Request,res:Response) =>{
     res.send("Hello World!");
 })
 
-app.use("/api/users",userRouter)
 app.use("/api/auth",authRouters)
 app.use("/api",PropertyRoutes)
 app.use("/api/landlord",LandlordPropertyRoutes)
@@ -40,6 +39,7 @@ app.use("/api/categories", CategoryRoutes);
 app.use("/api/rentals",RentalRoutes)
 app.use("/api/payments",PaymentRoutes)
 app.use("/api/reviews",ReviewRoutes)
+app.use("/api/admin",AdminRoutes)
 
 app.use(notFound)
 app.use(globalErrorHandler)

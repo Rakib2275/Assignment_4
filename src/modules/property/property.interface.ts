@@ -1,10 +1,11 @@
 export interface IPropertyQuery {
   searchTerm?: string;
   location?: string;
-  categoryId?: string;
-  status?: "AVAILABLE" | "RENTED";
   minPrice?: string;
   maxPrice?: string;
+  price?: string;
+  status?: string;
+  type?: string;
   page?: string;
   limit?: string;
   sortBy?: string;
