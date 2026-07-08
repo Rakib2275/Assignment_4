@@ -1,7 +1,7 @@
 import cookieParser from "cookie-parser";
 import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
-import config from "./config/index";
+import config from "./config/index.js";
 import httpStatus from "http-status";
 // import { prisma } from "./lib/prisma";
 // import bcrypt from "bcryptjs";

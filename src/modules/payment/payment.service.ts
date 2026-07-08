@@ -1,5 +1,5 @@
 import { PaymentStatus, RentalStatus } from "../../../generated/prisma/enums";
-import config from "../../config/index";
+import config from "../../config/index.js";
 import { prisma } from "../../lib/prisma";
 import stripe from "../../lib/stripe";
 
