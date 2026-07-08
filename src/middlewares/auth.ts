@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { Role } from "../../generated/prisma/enums"
 import { catchAsync } from "../utils/catchAsync"
 import { jwtUtils } from "../utils/jwt"
-import config from "../config"
+import config from "../config/index.js"
 import { JwtPayload } from "jsonwebtoken"
 import { prisma } from "../lib/prisma"
 

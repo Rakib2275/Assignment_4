@@ -1,7 +1,7 @@
 import { PaymentStatus, RentalStatus } from "../../../generated/prisma/enums";
 import config from "../../config/index.js";
 import { prisma } from "../../lib/prisma";
-import { stripe } from "../../lib/stripe";
+import stripe from "../../lib/stripe";
 
 const createPaymentIntoDB = async (rentalRequestId: string,tenantId: string) => {
     // console.log("Rental Id:",rentalRequestId)
